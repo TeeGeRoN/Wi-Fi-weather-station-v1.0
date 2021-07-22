@@ -2,7 +2,7 @@
 ## Weather station v1.0 on the module esp8266. NTP-sync. Graphs with Google Charts. Database.
 Brief description
 -----------------
-This is the first version of the weather station based on **esp8266** with *[Google Charts][1]* support and time synchronization using *NTP*. Atmospheric pressure and temperature are measured and recorded to a memory card periodically. Graphs are built on the local web server according to the latest data. The project is in the active development stage.
+This is the first version of the weather station based on **esp8266** with *[Google Charts][1]* support and time synchronization using *[NTP][0]*. Atmospheric pressure and temperature are measured and recorded to a memory card periodically. Graphs are built on the local web server according to the latest data. The project is in the active development stage.
 
 Explanations and recommendations from the author
 ------------------------------------------------
@@ -24,7 +24,7 @@ Components used in this project
 Connection
 ----------
 You can see the connection diagram below.
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+![WWSTv1 0](https://user-images.githubusercontent.com/77700004/126720587-db696b66-1796-4c0f-97e8-4eec49fac58a.png)
 
 The temperature sensor DS18B20 needs 5V power supply. The resistor must be placed between the signal output and the power supply of the sensor. The signal output is connected to D4(GPIO2).</br>
 For the SD card adapter to work properly you need 5V. Also you can connect a memory card directly without using an adapter. The card requires 3.3V and this is exactly the voltage at which the ESP8266 works. However, this approach is inconvenient, so I recommend not to choose this option. 6 contacts are used for connection of SD Adapter, interaction is made using the SPI interface(see NodeMCU [pinout][5]). MISO -> D6(GPIO12), MOSI -> D7(GPIO13), SCK -> D5(GPIO14) and CS - to any free output. I connected to D8 or GPIO15.</br>
@@ -114,7 +114,7 @@ This function indicates if time has been set and recently synchronized:
 
 `writeDB()` - function which stores the information to the database. It opens (or creates) a folder with the desired year, which contains a folder with the desired month. Inside which are stored files with the name in the format "dayOfTheMonth.txt". As a result, we get a file with the data as in the screenshot below.
 
-+++++++++++++++++++++++++++++++++++++++++++++++
+![DB_small_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126720848-522fdb3d-6099-49ea-952f-551bce5b380f.png)
 
 `getNtpTime()` - a function that is used to request and receive packets from the NTP server and process the received data.
 
@@ -123,29 +123,29 @@ Unloading in NodeNCU
 
 Once you have configured the firmware for yourself, you can unload on the board. I use the [Arduino IDE][10] to flash the module. In the program settings, select the board and its version, the port to which NodeMCU is connected, upload speed, flash size. You can find these settings in the *"tools"* section. Unload the firmware.
 
-++++++++++++++++++++++++++++++++++++++++++++
+![ArduinoIDE_tools_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126720890-71cb37d9-29de-4b0e-b4ac-3b3110359305.png)
 
 Open the serial port monitor and set the *speed* to *115200*. If you did all of this correctly, you will see a message similar to this.
 
-+++++++++++++++++++++++++++++++++++++++++++
+![Com-port_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126720920-ade92889-71d9-48d0-90ee-eec97c525b47.png)
 
 Well,  we can see that our board was synchronized on the NTP-server, set real time, launched a memory card without errors and recorded the first measurements of atmospheric pressure and temperature on it.
 
 Let's just wait for a moment until the system takes at least 10-15 measurements to see them clearly on the graphs.
 
-+++++++++++++++++++++++++++++++++++++++++++++++
+![GraphsWWSTv1 0](https://user-images.githubusercontent.com/77700004/126720944-55c21e1c-b5e6-4399-87eb-468c233dfd91.png)
 
 When you hover the mouse cursor over any of the points (or clicking on the point if you are viewing these graphs from a smartphone), you get a popup with information about this point (for example, the temperature at a particular time).
 
-+++++++++++++++++++++++++++++++++++++++++++++++
+![popup_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126720970-2700ea5e-0e7a-4b8a-8734-ae36516016d3.png)
 
 Now remove the memory card from the adapter and check that all data is recorded properly.
 
-++++++++++++++++++++++++++++++++++++++++++++++
+![path_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126720994-2866e8a3-aafe-4b19-af99-e0cb5aaecbe5.png)
 
 As you can see, the program correctly creates the path to the file and the file itself, which stores the data that we wrote there.
 
-+++++++++++++++++++++++++++++++++++++++++++++++
+![DB_big_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126721021-c9f23d37-b545-489f-a140-4e4cb4985d0c.png)
 
 If you have similar results - my congratulations, everything works as intended. Now I will describe the problems I faced myself, maybe they will help you solve yours.
 
@@ -153,7 +153,7 @@ Mistakes
 --------
 1)	If your esp8266 is constantly rebooted, and in the serial port you receive similar messages:
 
-++++++++++++++++++++++++++++++++++++++++++
+![Error_wdtreset_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126721047-ce74ed72-a81b-41dd-93b0-d8a001cbe24d.png)
 
 In this case, make sure that:
 - your memory card is formatted in the fat32 file system;
@@ -161,7 +161,7 @@ In this case, make sure that:
 - if the first 2 points are fulfilled, and the problem is still present, clear the flash memory on NodeMCU using the program nodemcu flasher and unload the firmware again.
 2)  If you see the date as of 01.01.1970, most likely, you could not connect to the NTP server(you will see a message about this in the serial port:
 
-+++++++++++++++++++++++++++++++++++
+![Error_ntp_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126721074-ef1af92a-a620-4f62-a407-b530fcd1bf9f.png)
 
 Check if you are connected to the Wi-Fi network, if the router has an Internet connection and if you have correctly specified the working NTP-server. The program will try to reconnect after the time period you specified in the resynchronization timer, if after 3-5 attempts it fails to do so, I recommend checking everything I described above in this paragraph.
 
@@ -187,6 +187,7 @@ Equally important is the implementation of a program for data analysis, processi
 
 ***I hope it was interesting to you. Good luck!***
 
+[0]: https://en.wikipedia.org/wiki/Network_Time_Protocol
 [1]: https://developers.google.com/chart
 [2]: https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf
 [3]: https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf
