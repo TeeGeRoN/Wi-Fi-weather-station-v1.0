@@ -24,7 +24,7 @@ Components used in this project
 Connection
 ----------
 You can see the connection diagram below.
-![WWSTv1 0](https://user-images.githubusercontent.com/77700004/126720587-db696b66-1796-4c0f-97e8-4eec49fac58a.png)
+![scheme_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126721919-7db97246-f44e-4fd6-b1de-d429b55e4c25.png)
 
 The temperature sensor DS18B20 needs 5V power supply. The resistor must be placed between the signal output and the power supply of the sensor. The signal output is connected to D4(GPIO2).</br>
 For the SD card adapter to work properly you need 5V. Also you can connect a memory card directly without using an adapter. The card requires 3.3V and this is exactly the voltage at which the ESP8266 works. However, this approach is inconvenient, so I recommend not to choose this option. 6 contacts are used for connection of SD Adapter, interaction is made using the SPI interface(see NodeMCU [pinout][5]). MISO -> D6(GPIO12), MOSI -> D7(GPIO13), SCK -> D5(GPIO14) and CS - to any free output. I connected to D8 or GPIO15.</br>
