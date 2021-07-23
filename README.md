@@ -158,7 +158,7 @@ Mistakes
 In this case, make sure that:
 - your memory card is formatted in the fat32 file system;
 - you have correctly specified the GPIO pin to which the CS input of the adapter is connected;
-- if the first 2 points are fulfilled, and the problem is still present, clear the flash memory on NodeMCU using the program nodemcu flasher and unload the firmware again.
+- if the first 2 points are fulfilled, and the problem is still present, clear the flash memory on NodeMCU using the program **nodemcu flasher** and unload the firmware again.
 2)  If you see the date as of 01.01.1970, most likely, you could not connect to the NTP server(you will see a message about this in the serial port:
 
 ![Error_ntp_WWSTv1 0](https://user-images.githubusercontent.com/77700004/126721074-ef1af92a-a620-4f62-a407-b530fcd1bf9f.png)
